@@ -6,11 +6,11 @@
 # 가로 20 세로 20 사각형 B
 def paper(x):
     if x == 1:
-        return 1
+        return 1 # 1번 항
     if x == 2:
-        return 3
-    else:
-       return (paper(x-1)+2 * paper(x-2))
+        return 3 # 2번 항
+    else: # n번 째 항
+       return (paper(x-1)+2 * paper(x-2)) # 점화식 a(n) = 2 * a(n-2) + a(n-1)
 T = int(input()) # test_case 입력 
 
 for test_case in range(1,T+1): # test_case 만큼 반복
