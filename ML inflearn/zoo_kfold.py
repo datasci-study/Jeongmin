@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
 from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import cross_val_score, cross_validate
 
 
 zoo_df = pd.read_csv("./zoo.csv")
@@ -91,3 +92,11 @@ for train_index, test_index in SKf.split(zoo_ftr, zoo_tar):
 # 교차 검증별 정확도 및 평균 정확도 계산
 print('\n## 교차 검증별 정확도:', np.round(cv_accuracy, 4))
 print('## 평균 검증 정확도:', np.mean(cv_accuracy))
+
+
+# 성능 지표는 정확도(accuracy) , 교차 검증 세트는 3개
+print('\ncross_val_score : ')
+scores = cross_val_score(dt_clf, zoo_ftr, zoo_tar
+                         , scoring='accuracy' ,cv=3)
+print('교차 검증별 정확도:', np.round(scores, 4))
+print('평균 검증 정확도:', np.round(np.mean(scores), 4))
