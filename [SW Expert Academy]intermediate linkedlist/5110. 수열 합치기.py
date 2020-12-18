@@ -20,7 +20,7 @@ class Linkedlist():
                 node = node.next
             node.next = addnode
             addnode.prev = node
-            tail = addnode
+            self.tail = addnode
     def delete(self, data):
         if self.head.next == None:
             print("연결리스트에 값이 없습니다.")
@@ -63,13 +63,26 @@ class Linkedlist():
             while curnode.next:
                 if(curnode.next == index):
                     temp = curnode.next
-                    curnode.next = addnode
-                    addnode.next = temp
-                    addnode.prev = curnode
-                    tail = addnode
+                    if temp.next:
+                        curnode.next = addnode
+                        addnode.next = temp
+                        addnode.prev = curnode
+                        self.tail = temp.next
+                    else:
+                        curnode.next = addnode
+                        addnode.next = temp
+                        addnode.prev = curnode
+                        self.tail = temp.next
                     return addnode.next
+                curnode = curnode.next
     def printlist(self):
-
+        # tail부분에서 프린트
+        printnode = self.tail
+        count = 0
+        while printnode.prev:
+            count += 1
+            print(printnode.data)
+            printnode = printnode.prev
 
 T = int(input()) #test_case
 for test_case in range(1,T+1):
@@ -82,5 +95,12 @@ for test_case in range(1,T+1):
                 sequence.add(tempseq[j])
         else:
             index = sequence.findindex(tempseq[0])
-            for j in range(N):
-                index = sequence.indexadd(index, tempseq[j])
+            if not index:
+
+                for j in range(N):
+                    sequence.add(tempseq[j])
+            else:
+                for j in range(N):
+                    index = sequence.indexadd(index, tempseq[j])
+    
+    sequence.printlist()
