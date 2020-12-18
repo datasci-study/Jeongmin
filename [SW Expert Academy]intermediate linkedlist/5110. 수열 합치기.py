@@ -12,15 +12,17 @@ class Linkedlist():
         addnode = Node(data)
         if self.head.next == None:
             self.head.next = addnode
-            tail = addnode
-            addnode.prev = self.head          
-        else:
-            node = self.head
-            while node.next:
-                node = node.next
-            node.next = addnode
-            addnode.prev = node
             self.tail = addnode
+            addnode.prev = self.head         
+        else:
+            if self.tail:
+                self.tail.next = addnode
+                addnode.prev = self.tail
+                self.tail = addnode
+            else:
+                self.head.next = addnode
+                addnode.prev = self.head
+                self.tail = addnode
     def delete(self, data):
         if self.head.next == None:
             print("연결리스트에 값이 없습니다.")
@@ -66,28 +68,32 @@ class Linkedlist():
                     if temp.next:
                         curnode.next = addnode
                         addnode.next = temp
+                        temp.prev = addnode
                         addnode.prev = curnode
-                        self.tail = temp.next
                     else:
                         curnode.next = addnode
                         addnode.next = temp
+                        temp.prev = addnode
                         addnode.prev = curnode
-                        self.tail = temp.next
+                        self.tail = temp
                     return addnode.next
                 curnode = curnode.next
-    def printlist(self):
+    def printlist(self, result):
         # tail부분에서 프린트
         printnode = self.tail
         count = 0
         while printnode.prev:
             count += 1
-            print(printnode.data)
+            printdata = str(printnode.data)
+            result.append(printdata)
             printnode = printnode.prev
+            if count>=10: break
 
 T = int(input()) #test_case
 for test_case in range(1,T+1):
     N, M = map(int, input().split()) # N: 수열의 길이, M: 수열의 개수
     sequence = Linkedlist()
+    result = []
     for i in range(M):
         tempseq = list(map(int, input().split()))
         if i == 0:
@@ -103,4 +109,6 @@ for test_case in range(1,T+1):
                 for j in range(N):
                     index = sequence.indexadd(index, tempseq[j])
     
-    sequence.printlist()
+    sequence.printlist(result)
+
+    print("#{0} {1}".format(test_case ,' '.join(result)))
